@@ -49,6 +49,7 @@ public class RssClient {
                 return parseRss(inputStream);
             } catch (IOException e) {
                 e.printStackTrace();
+                // FIXME: 5/25/17 return empty instead of null. Null leads to crash
                 return null;
             }
         }).subscribeOn(Schedulers.io());
