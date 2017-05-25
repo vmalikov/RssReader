@@ -62,16 +62,14 @@ public class ChannelDeserializer extends XmlDeserializer {
     protected static ChannelImage readImage(XmlPullParser parser) throws IOException, XmlPullParserException {
         ChannelImage.Builder builder = ChannelImage.builder();
 
-        skipUntil(parser, Constants.IMAGE);
-
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
 
-            if (name.equals(Constants.LINK)) {
-                builder.setUrl(readByTagName(Constants.LINK, parser));
+            if (name.equals(Constants.URL)) {
+                builder.setUrl(readByTagName(Constants.URL, parser));
             } else if (name.equals(Constants.WIDTH)) {
                 builder.setWidth(Integer.parseInt(readByTagName(Constants.WIDTH, parser)));
             } else if (name.equals(Constants.HEIGHT)) {
@@ -82,5 +80,35 @@ public class ChannelDeserializer extends XmlDeserializer {
         }
 
         return builder.build();
+    }
+
+    public static String getInnerXml(XmlPullParser parser)
+            throws XmlPullParserException, IOException {
+        StringBuilder sb = new StringBuilder();
+        int depth = 1;
+        while (depth != 0) {
+            switch (parser.next()) {
+                case XmlPullParser.END_TAG:
+                    depth--;
+                    if (depth > 0) {
+                        sb.append("</" + parser.getName() + ">");
+                    }
+                    break;
+                case XmlPullParser.START_TAG:
+                    depth++;
+                    StringBuilder attrs = new StringBuilder();
+                    for (int i = 0; i < parser.getAttributeCount(); i++) {
+                        attrs.append(parser.getAttributeName(i) + "=\""
+                                + parser.getAttributeValue(i) + "\" ");
+                    }
+                    sb.append("<" + parser.getName() + " " + attrs.toString() + ">");
+                    break;
+                default:
+                    sb.append(parser.getText());
+                    break;
+            }
+        }
+        String content = sb.toString();
+        return content;
     }
 }

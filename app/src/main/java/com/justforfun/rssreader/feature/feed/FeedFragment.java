@@ -14,6 +14,8 @@ import com.justforfun.rssreader.databinding.FeedLayoutBinding;
 import com.justforfun.rssreader.feature.feed.adapter.FeedsListAdapter;
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.feature.shared.BaseFragment;
+import com.justforfun.rssreader.feature.shared.IToolbarableView;
+import com.justforfun.rssreader.feature.shared.MainActivity;
 
 /**
  * Created by Vladimir on 5/16/17.
@@ -25,6 +27,12 @@ public class FeedFragment extends BaseFragment implements IFeedableView {
     private FeedPresenter presenter;
     private FeedLayoutBinding binding;
     private FeedsListAdapter adapter;
+    private IToolbarableView toolbarableView;
+
+    public static FeedFragment newInstance(IToolbarableView toolbarableView) {
+        return new FeedFragment()
+                .setToolbarableView(toolbarableView);
+    }
 
     @Nullable
     @Override
@@ -49,10 +57,20 @@ public class FeedFragment extends BaseFragment implements IFeedableView {
         binding.feedsList.setAdapter(adapter);
     }
 
+    public FeedFragment setToolbarableView(IToolbarableView toolbarableView) {
+        if(toolbarableView == null) throw new IllegalArgumentException("Please provide view with toolbar!");
+
+        this.toolbarableView = toolbarableView;
+        return this;
+    }
+
     @Override
     public void showFeed(ChannelData channel) {
         Log.i(TAG, "showFeed: '" + channel.title + "' with " + channel.items.size() + " posts");
         adapter.setItems(channel.items);
+
+        Log.i(TAG, "showFeed: " + channel.image.url + " " + channel.image.width + "x" + channel.image.height);
+        toolbarableView.setTitle(channel.title);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.justforfun.rssreader.network;
 
+import android.support.annotation.NonNull;
+
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.feature.feed.model.FeedItem;
 import com.justforfun.rssreader.model.ChannelEntry;
@@ -26,12 +28,28 @@ public class LiveJournalRepository {
         channelData.title = channelEntry.title();
         channelData.description = channelEntry.description();
         channelData.link = channelEntry.link();
+        channelData.image = convertFeedEntryImage(channelEntry);
+        channelData.items = convertFeedEntryItems(channelEntry);
+
+        return Single.just(channelData);
+    }
+
+    @NonNull
+    private ArrayList<FeedItem> convertFeedEntryItems(ChannelEntry channelEntry) {
         ArrayList<FeedItem> feedItems = new ArrayList<>();
         for(FeedEntry entry : channelEntry.items()) {
             feedItems.add(convertFeedEntry(entry));
         }
-        channelData.items = feedItems;
-        return Single.just(channelData);
+        return feedItems;
+    }
+
+    @NonNull
+    private ChannelData.Image convertFeedEntryImage(ChannelEntry channelEntry) {
+        ChannelData.Image image = new ChannelData.Image();
+        image.url = channelEntry.image().url();
+        image.width = channelEntry.image().width();
+        image.height = channelEntry.image().height();
+        return image;
     }
 
     private FeedItem convertFeedEntry(FeedEntry entry) {
