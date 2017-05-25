@@ -3,31 +3,29 @@ package com.justforfun.rssreader.feature.feed;
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.network.LiveJournalRepository;
 
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Vladimir on 5/16/17.
  */
 
-public class FeedPresenter {
+public class ChannelPresenter {
 
-    private IFeedableView view;
+    private IChannelableView view;
 
     private LiveJournalRepository liveJournalRepository;
 
-    public FeedPresenter(IFeedableView view) {
+    public ChannelPresenter(IChannelableView view) {
         this.view = view;
         this.liveJournalRepository = new LiveJournalRepository();
     }
 
-    public void loadFeedFor(String user) {
+    public void loadChannelFor(String user) {
         view.showLoading();
         liveJournalRepository.fetchFeed(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(e -> showError(e))
-                .subscribe(channel -> showFeed(channel));
+                .subscribe(channel -> onChannelLoaded(channel));
     }
 
     private void showError(Throwable e) {
@@ -35,8 +33,9 @@ public class FeedPresenter {
         view.showError(e.getMessage());
     }
 
-    private void showFeed(ChannelData channel) {
+    private void onChannelLoaded(ChannelData channel) {
         view.hideLoading();
+        view.updateToolbar(channel);
         view.showFeed(channel);
     }
 }

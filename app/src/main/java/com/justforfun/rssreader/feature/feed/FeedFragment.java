@@ -1,10 +1,12 @@
 package com.justforfun.rssreader.feature.feed;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +17,18 @@ import com.justforfun.rssreader.feature.feed.adapter.FeedsListAdapter;
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.feature.shared.BaseFragment;
 import com.justforfun.rssreader.feature.shared.IToolbarableView;
-import com.justforfun.rssreader.feature.shared.MainActivity;
+import com.justforfun.rssreader.util.ImageLoader;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 /**
  * Created by Vladimir on 5/16/17.
  */
 
-public class FeedFragment extends BaseFragment implements IFeedableView {
+public class FeedFragment extends BaseFragment implements IChannelableView {
     private static final String TAG = FeedFragment.class.getSimpleName();
 
-    private FeedPresenter presenter;
+    private ChannelPresenter presenter;
     private FeedLayoutBinding binding;
     private FeedsListAdapter adapter;
     private IToolbarableView toolbarableView;
@@ -46,8 +50,8 @@ public class FeedFragment extends BaseFragment implements IFeedableView {
         super.onViewCreated(view, savedInstanceState);
         setupFeedsList();
 
-        presenter = new FeedPresenter(this);
-        presenter.loadFeedFor("zmey-gadukin");
+        presenter = new ChannelPresenter(this);
+        presenter.loadChannelFor("zmey-gadukin");
     }
 
     private void setupFeedsList() {
@@ -66,11 +70,13 @@ public class FeedFragment extends BaseFragment implements IFeedableView {
 
     @Override
     public void showFeed(ChannelData channel) {
-        Log.i(TAG, "showFeed: '" + channel.title + "' with " + channel.items.size() + " posts");
         adapter.setItems(channel.items);
+    }
 
-        Log.i(TAG, "showFeed: " + channel.image.url + " " + channel.image.width + "x" + channel.image.height);
+    @Override
+    public void updateToolbar(ChannelData channel) {
         toolbarableView.setTitle(channel.title);
+        ImageLoader.loadLogo(getContext(), channel.image.url, drawable -> toolbarableView.setLogoFrom(drawable));
     }
 
     @Override
