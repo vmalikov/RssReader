@@ -1,9 +1,6 @@
 package com.justforfun.rssreader.feature.feed;
 
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,8 +15,6 @@ import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.feature.shared.BaseFragment;
 import com.justforfun.rssreader.feature.shared.IToolbarableView;
 import com.justforfun.rssreader.util.ImageLoader;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 /**
  * Created by Vladimir on 5/16/17.
