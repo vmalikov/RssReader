@@ -51,8 +51,9 @@ public class SourceSelectorFragment extends BaseFragment implements IScreen {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // FIXME: 5/25/17 remove stub
-        binding.editText.setText("zmey-gadukin");
+        // FIXME: 5/25/17 remove stub zmey-gadukin
+        binding.editText.setText("evo-lutio");
+        binding.editText.setSelection(binding.editText.getText().length());
     }
 
     @Override
@@ -60,7 +61,7 @@ public class SourceSelectorFragment extends BaseFragment implements IScreen {
 
     }
 
-    // TODO: 5/25/17 move to Util class 
+    // TODO: 5/25/17 move to Util class
     private void hideKeyboard(View v) {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
