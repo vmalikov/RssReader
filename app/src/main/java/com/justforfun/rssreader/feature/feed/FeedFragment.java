@@ -4,11 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,8 +14,6 @@ import com.justforfun.rssreader.databinding.FeedLayoutBinding;
 import com.justforfun.rssreader.feature.feed.adapter.FeedsListAdapter;
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.feature.shared.BaseFragment;
-import com.justforfun.rssreader.feature.shared.IScreen;
-import com.justforfun.rssreader.feature.shared.IToolbarableView;
 import com.justforfun.rssreader.feature.shared.viewmodel.SharedViewModel;
 import com.justforfun.rssreader.util.ImageLoader;
 
@@ -31,6 +26,7 @@ public class FeedFragment extends BaseFragment implements IChannelableView {
 
     private FeedLayoutBinding binding;
     private FeedsListAdapter adapter;
+    private SharedViewModel sharedViewModel;
 
     @Nullable
     @Override
@@ -56,15 +52,22 @@ public class FeedFragment extends BaseFragment implements IChannelableView {
                      .observe(this, channel -> showFeed((ChannelData) channel));
 
 
-        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        model.getUsername().observe(this, feedViewModel::loadChannelFor);
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        sharedViewModel.getUsername().observe(this, feedViewModel::loadChannelFor);
     }
 
     private void setupFeedsList() {
+        setupAdapter();
         binding.feedsList.setHasFixedSize(true);
         binding.feedsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new FeedsListAdapter();
         binding.feedsList.setAdapter(adapter);
+    }
+
+    private void setupAdapter() {
+        adapter = new FeedsListAdapter();
+        adapter.getPositionClicks()
+                .doOnNext(item -> router.showLink(item.link))
+                .subscribe();
     }
 
     @Override

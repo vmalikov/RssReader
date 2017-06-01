@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.justforfun.rssreader.R;
 import com.justforfun.rssreader.databinding.ActivityMainBinding;
@@ -41,7 +42,23 @@ public class MainActivity extends BaseActivity implements IToolbarableView, IRou
 
     @Override
     public void showScreen(IScreen screen) {
+        binding.webview.setVisibility(View.GONE);
         screen.setToolbarableView(this);
         addFragment(R.id.fragment, (Fragment) screen);
+    }
+
+    @Override
+    public void showLink(String link) {
+        binding.webview.setVisibility(View.VISIBLE);
+        binding.webview.loadUrl(link);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(binding.webview.isShown()) {
+            binding.webview.setVisibility(View.GONE);
+            return;
+        }
+        super.onBackPressed();
     }
 }

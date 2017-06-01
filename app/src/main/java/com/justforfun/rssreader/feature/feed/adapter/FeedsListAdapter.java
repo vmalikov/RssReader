@@ -3,7 +3,6 @@ package com.justforfun.rssreader.feature.feed.adapter;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -15,12 +14,17 @@ import com.justforfun.rssreader.util.StringFormatter;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+
 /**
  * Created by Vladimir on 5/17/17.
  */
 
 public class FeedsListAdapter extends RecyclerView.Adapter<FeedsListAdapter.FeedViewHolder> {
     private static final String TAG = FeedsListAdapter.class.getSimpleName();
+
+    private final PublishSubject<FeedItem> onClickSubject = PublishSubject.create();
 
     private ArrayList<FeedItem> items;
 
@@ -32,6 +36,10 @@ public class FeedsListAdapter extends RecyclerView.Adapter<FeedsListAdapter.Feed
         this.items.clear();
         this.items.addAll(items);
         notifyDataSetChanged();
+    }
+
+    public Observable<FeedItem> getPositionClicks() {
+        return onClickSubject;
     }
 
     @Override
@@ -48,6 +56,7 @@ public class FeedsListAdapter extends RecyclerView.Adapter<FeedsListAdapter.Feed
         holder.title.setText(item.title);
         holder.description.setText(Html.fromHtml(item.description));
         holder.pubDate.setText(StringFormatter.formatPubDate(item.pubDate));
+        holder.itemView.setOnClickListener(v -> onClickSubject.onNext(item));
     }
 
     @Override

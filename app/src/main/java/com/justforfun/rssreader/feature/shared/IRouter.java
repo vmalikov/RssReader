@@ -6,4 +6,5 @@ package com.justforfun.rssreader.feature.shared;
 
 public interface IRouter {
     void showScreen(IScreen screen);
+    void showLink(String link);
 }
