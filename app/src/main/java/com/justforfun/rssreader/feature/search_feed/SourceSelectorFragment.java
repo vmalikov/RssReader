@@ -32,11 +32,19 @@ public class SourceSelectorFragment extends BaseFragment implements IScreen {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.source_selector_layout, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        model.getRouterData().observe(this, router -> setupGoListener(router));
+        setupGoListener(router);
 
-        return binding.getRoot();
+        // FIXME: 5/25/17 remove stub zmey-gadukin
+        binding.editText.setText("evo-lutio");
+        binding.editText.setSelection(binding.editText.getText().length());
     }
 
     private void setupGoListener(IRouter router) {
@@ -48,17 +56,8 @@ public class SourceSelectorFragment extends BaseFragment implements IScreen {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // FIXME: 5/25/17 remove stub zmey-gadukin
-        binding.editText.setText("evo-lutio");
-        binding.editText.setSelection(binding.editText.getText().length());
-    }
-
-    @Override
     public void setToolbarableView(IToolbarableView view) {
-
+        // stub
     }
 
     // TODO: 5/25/17 move to Util class

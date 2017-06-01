@@ -25,10 +25,7 @@ public class MainActivity extends BaseActivity implements IToolbarableView, IRou
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
-
-        SharedViewModel model = ViewModelProviders.of(this).get(SharedViewModel.class);
-        model.setRouterData(this);
-
+        
         showScreen(new SourceSelectorFragment());
     }
 

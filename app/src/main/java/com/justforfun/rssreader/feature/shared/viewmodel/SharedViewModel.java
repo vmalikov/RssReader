@@ -14,7 +14,6 @@ import java.lang.ref.WeakReference;
 
 public class SharedViewModel extends ViewModel {
     private MutableLiveData<String> usernameData = new MutableLiveData<>();
-    private MutableLiveData<IRouter> mRouterData = new MutableLiveData<>();
 
     public LiveData<String> getUsername() {
         return usernameData;
@@ -22,13 +21,5 @@ public class SharedViewModel extends ViewModel {
 
     public void setUsername(String value) {
         this.usernameData.setValue(value);
-    }
-
-    public LiveData<IRouter> getRouterData() {
-        return mRouterData;
-    }
-
-    public void setRouterData(IRouter router) {
-        this.mRouterData.setValue(router);
     }
 }
