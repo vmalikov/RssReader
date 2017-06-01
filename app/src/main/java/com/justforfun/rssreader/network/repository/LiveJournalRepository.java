@@ -19,12 +19,8 @@ import io.reactivex.Single;
  */
 
 public class LiveJournalRepository extends AbstractRepository {
-
-    private static final String rss_url = "http://%s.livejournal.com/data/rss"; // zmey-gadukin
-
     @Override
-    public Single<ChannelData> fetchFeed(String user) {
-        return RssClient.getInstance().fetchFeedFor(user, rss_url)
-                .flatMap(channelEntry -> convertToViewData(channelEntry));
+    public String getRssUrl() {
+        return "http://%s.livejournal.com/data/rss"; // zmey-gadukin;
     }
 }

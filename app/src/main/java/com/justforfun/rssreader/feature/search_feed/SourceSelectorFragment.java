@@ -1,29 +1,22 @@
 package com.justforfun.rssreader.feature.search_feed;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.CompoundButton;
 
 import com.justforfun.rssreader.R;
 import com.justforfun.rssreader.databinding.SourceSelectorLayoutBinding;
 import com.justforfun.rssreader.feature.feed.FeedFragment;
 import com.justforfun.rssreader.feature.shared.BaseFragment;
 import com.justforfun.rssreader.feature.shared.IRouter;
-import com.justforfun.rssreader.feature.shared.IScreen;
-import com.justforfun.rssreader.feature.shared.IToolbarableView;
 import com.justforfun.rssreader.feature.shared.viewmodel.SharedViewModel;
 import com.justforfun.rssreader.network.repository.LiveJournalRepository;
 import com.justforfun.rssreader.network.repository.MediumRepository;
 import com.justforfun.rssreader.util.Keyboard;
-
-import java.security.Key;
 
 /**
  * Created by Vladimir on 5/16/17.
@@ -67,6 +60,7 @@ public class SourceSelectorFragment extends BaseFragment {
     }
 
     private void setupSourceGroupListeners() {
+        // initial value
         model.setRepositoryClass(LiveJournalRepository.class);
 
         binding.ljButton.setOnCheckedChangeListener((buttonView, isChecked) -> {

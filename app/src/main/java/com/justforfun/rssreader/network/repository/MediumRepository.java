@@ -10,11 +10,8 @@ import io.reactivex.Single;
  */
 
 public class MediumRepository extends AbstractRepository {
-    private static final String rss_url = "https://medium.com/feed/@%s"; // Medium
-
     @Override
-    public Single<ChannelData> fetchFeed(String user) {
-        return RssClient.getInstance().fetchFeedFor(user, rss_url)
-                .flatMap(channelEntry -> convertToViewData(channelEntry));
+    public String getRssUrl() {
+        return "https://medium.com/feed/@%s"; // Medium
     }
 }
