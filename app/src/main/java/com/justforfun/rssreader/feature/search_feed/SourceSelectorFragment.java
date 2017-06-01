@@ -33,7 +33,6 @@ public class SourceSelectorFragment extends BaseFragment {
 
     private SharedViewModel model;
     private SourceSelectorLayoutBinding binding;
-    private IToolbarableView view;
 
     @Nullable
     @Override

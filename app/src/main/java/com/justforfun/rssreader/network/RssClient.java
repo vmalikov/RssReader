@@ -35,7 +35,7 @@ public class RssClient {
         return sInstance;
     }
 
-    // Use getInstance() method
+    /** Use {@link RssClient#getInstance()} method */
     private RssClient() {}
 
     public Single<ChannelEntry> fetchFeedFor(String user, String rss_url) {
@@ -45,51 +45,9 @@ public class RssClient {
             URL url = new URL(urlString);
 
             InputStream inputStream = url.openConnection().getInputStream();
-            return parseRss(inputStream);
+            return ChannelDeserializer.parseRss(inputStream);
 
         }).onErrorReturnItem(ChannelEntry.builder().build())
           .subscribeOn(Schedulers.io());
     }
-
-    private ChannelEntry parseRss(InputStream in) throws IOException {
-        try {
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            XmlPullParser parser = factory.newPullParser();
-            parser.setInput(in, null);
-            return ChannelDeserializer.readEntry(parser);
-
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private static String getStringFromInputStream(InputStream is) {
-
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return sb.toString();
-    }
-
 }

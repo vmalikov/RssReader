@@ -10,8 +10,10 @@ import com.justforfun.rssreader.network.Constants;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -20,6 +22,19 @@ import java.util.ArrayList;
 
 public class ChannelDeserializer extends XmlDeserializer {
     private static final String TAG = ChannelDeserializer.class.getSimpleName();
+
+    public static ChannelEntry parseRss(InputStream in) throws IOException {
+        try {
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = factory.newPullParser();
+            parser.setInput(in, null);
+            return readEntry(parser);
+
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static ChannelEntry readEntry(XmlPullParser parser) throws IOException, XmlPullParserException {
         skipUntil(parser, Constants.CHANNEL);
