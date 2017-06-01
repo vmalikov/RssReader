@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
 
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
-import com.justforfun.rssreader.network.LiveJournalRepository;
+import com.justforfun.rssreader.network.repository.AbstractRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -19,12 +19,12 @@ public class FeedViewModel<T extends IChannelableView> extends ViewModel {
     @Nullable
     private T view;
 
-    private LiveJournalRepository liveJournalRepository;
+    private AbstractRepository repository;
 
     private MutableLiveData<ChannelData> channelData = new MutableLiveData<>();
 
-    public FeedViewModel() {
-        liveJournalRepository = new LiveJournalRepository();
+    public void setRepository(AbstractRepository repository) {
+        this.repository = repository;
     }
 
     public void setView(T view) {
@@ -33,16 +33,23 @@ public class FeedViewModel<T extends IChannelableView> extends ViewModel {
 
     public void loadChannelFor(String user) {
         view.showLoading();
-        liveJournalRepository.fetchFeed(user)
+        repository.fetchFeed(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(e -> showError(e))
                 .subscribe(channel -> onChannelReceived(channel));
     }
 
     private void onChannelReceived(ChannelData channel) {
-        setChannelData(channel);
         view.hideLoading();
+
+        if(channel.equals(ChannelData.empty)) {
+            view.showEmptyState();
+            return;
+        }
+
+        view.hideEmptyState();
         view.updateToolbar(channel);
+        setChannelData(channel);
     }
 
     private void showError(Throwable e) {

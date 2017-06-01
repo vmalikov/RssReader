@@ -26,8 +26,6 @@ import io.reactivex.schedulers.Schedulers;
 public class RssClient {
     private static final String TAG = RssClient.class.getSimpleName();
 
-    private static final String rss_url = "http://%s.livejournal.com/data/rss"; // zmey-gadukin
-
     private static RssClient sInstance;
 
     public static RssClient getInstance() {
@@ -40,7 +38,7 @@ public class RssClient {
     // Use getInstance() method
     private RssClient() {}
 
-    public Single<ChannelEntry> fetchFeedFor(String user) {
+    public Single<ChannelEntry> fetchFeedFor(String user, String rss_url) {
         return Single.fromCallable(() -> {
             String urlString = String.format(rss_url, user);
             Log.i(TAG, "fetchFeedFor: " + urlString);
@@ -49,12 +47,11 @@ public class RssClient {
             InputStream inputStream = url.openConnection().getInputStream();
             return parseRss(inputStream);
 
-        }).doOnError(t -> Single.error(t))
+        }).onErrorReturnItem(ChannelEntry.builder().build())
           .subscribeOn(Schedulers.io());
     }
 
     private ChannelEntry parseRss(InputStream in) throws IOException {
-//        Log.i(TAG, "fetchFeedFor: " + getStringFromInputStream(in));
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser parser = factory.newPullParser();

@@ -70,10 +70,6 @@ public class ChannelDeserializer extends XmlDeserializer {
 
             if (name.equals(Constants.URL)) {
                 builder.setUrl(readByTagName(Constants.URL, parser));
-            } else if (name.equals(Constants.WIDTH)) {
-                builder.setWidth(Integer.parseInt(readByTagName(Constants.WIDTH, parser)));
-            } else if (name.equals(Constants.HEIGHT)) {
-                builder.setHeight(Integer.parseInt(readByTagName(Constants.HEIGHT, parser)));
             } else {
                 skip(parser);
             }

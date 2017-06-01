@@ -33,6 +33,8 @@ public class FeedItemDeserializer extends XmlDeserializer {
                 builder.setTitle(readByTagName(Constants.TITLE, parser));
             } else if (name.equals(Constants.DESCRIPTION)) {
                 builder.setDescription(readByTagName(Constants.DESCRIPTION, parser));
+            } else if (name.equals(Constants.CONTENT_ENCODED)) {
+                builder.setDescription(readByTagName(Constants.CONTENT_ENCODED, parser));
             } else if (name.equals(Constants.LINK)) {
                 builder.setLink(readByTagName(Constants.LINK, parser));
             } else if (name.equals(Constants.PUB_DATE)) {

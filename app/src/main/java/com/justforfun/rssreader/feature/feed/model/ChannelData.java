@@ -7,6 +7,9 @@ import java.util.ArrayList;
  */
 
 public class ChannelData {
+
+    public static final ChannelData empty = new ChannelData();
+
     public String title;
     public String description;
     public String link;
@@ -15,7 +18,5 @@ public class ChannelData {
 
     public static class Image {
         public String url;
-        public int width;
-        public int height;
     }
 }

@@ -14,7 +14,10 @@ public class Constants {
     public static String LAST_BUILD_DATE = "lastBuildDate";
     public static String IMAGE = "image";
     public static String URL = "url";
-    public static String WIDTH = "width";
-    public static String HEIGHT = "height";
     public static String ITEM = "item";
+
+    /**
+     * Medium specific
+     */
+    public static String CONTENT_ENCODED = "content:encoded";
 }

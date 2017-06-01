@@ -15,6 +15,7 @@ import java.lang.ref.WeakReference;
 
 public class SharedViewModel extends ViewModel {
     private MutableLiveData<String> usernameData = new MutableLiveData<>();
+    private MutableLiveData<Class> repositoryClass = new MutableLiveData<>();
 
     public LiveData<String> getUsername() {
         return usernameData;
@@ -23,4 +24,14 @@ public class SharedViewModel extends ViewModel {
     public void setUsername(String value) {
         this.usernameData.setValue(value);
     }
+
+    public LiveData<Class> getRepositoryClass() {
+        return repositoryClass;
+    }
+
+    public void setRepositoryClass(Class value) {
+        this.repositoryClass.setValue(value);
+    }
+
+
 }

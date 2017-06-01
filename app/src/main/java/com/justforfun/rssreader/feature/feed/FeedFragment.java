@@ -15,6 +15,7 @@ import com.justforfun.rssreader.feature.feed.adapter.FeedsListAdapter;
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.feature.shared.BaseFragment;
 import com.justforfun.rssreader.feature.shared.viewmodel.SharedViewModel;
+import com.justforfun.rssreader.network.repository.AbstractRepository;
 import com.justforfun.rssreader.util.ImageLoader;
 
 /**
@@ -53,6 +54,17 @@ public class FeedFragment extends BaseFragment implements IChannelableView {
 
 
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+
+        sharedViewModel.getRepositoryClass().observe(this, repositoryClass -> {
+            try {
+                feedViewModel.setRepository((AbstractRepository) repositoryClass.newInstance());
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
         sharedViewModel.getUsername().observe(this, feedViewModel::loadChannelFor);
     }
 
@@ -80,6 +92,16 @@ public class FeedFragment extends BaseFragment implements IChannelableView {
         toolbarableView.setTitle(channel.title);
         ImageLoader.loadLogo(getActivity().getApplicationContext(),
                 channel.image.url, drawable -> toolbarableView.setLogoFrom(drawable));
+    }
+
+    @Override
+    public void showEmptyState() {
+        binding.emptyText.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyState() {
+        binding.emptyText.setVisibility(View.GONE);
     }
 
     @Override

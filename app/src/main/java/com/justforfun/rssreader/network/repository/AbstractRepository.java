@@ -1,6 +1,7 @@
-package com.justforfun.rssreader.network;
+package com.justforfun.rssreader.network.repository;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.feature.feed.model.FeedItem;
@@ -11,19 +12,17 @@ import java.util.ArrayList;
 
 import io.reactivex.Single;
 
-
 /**
- * Created by Vladimir on 5/16/17.
+ * Created by Vladimir on 6/1/17.
  */
 
-public class LiveJournalRepository {
+public abstract class AbstractRepository {
 
-    public Single<ChannelData> fetchFeed(String user) {
-        return RssClient.getInstance().fetchFeedFor(user)
-                .flatMap(channelEntry -> convertToViewData(channelEntry));
-    }
+    public abstract Single<ChannelData> fetchFeed(String user);
 
-    private Single<ChannelData> convertToViewData(ChannelEntry channelEntry) {
+    protected Single<ChannelData> convertToViewData(ChannelEntry channelEntry) {
+        if(shouldBeEmpty(channelEntry)) return Single.just(ChannelData.empty);
+
         ChannelData channelData = new ChannelData();
         channelData.title = channelEntry.title();
         channelData.description = channelEntry.description();
@@ -32,6 +31,15 @@ public class LiveJournalRepository {
         channelData.items = convertFeedEntryItems(channelEntry);
 
         return Single.just(channelData);
+    }
+
+    private boolean shouldBeEmpty(ChannelEntry channelEntry) {
+        return TextUtils.isEmpty(channelEntry.title())
+                && TextUtils.isEmpty(channelEntry.description())
+                && TextUtils.isEmpty(channelEntry.lastBuildDate())
+                && TextUtils.isEmpty(channelEntry.link())
+                && (channelEntry.items() == null || channelEntry.items().isEmpty())
+                ;
     }
 
     @NonNull
@@ -47,8 +55,6 @@ public class LiveJournalRepository {
     private ChannelData.Image convertFeedEntryImage(ChannelEntry channelEntry) {
         ChannelData.Image image = new ChannelData.Image();
         image.url = channelEntry.image().url();
-        image.width = channelEntry.image().width();
-        image.height = channelEntry.image().height();
         return image;
     }
 

@@ -38,7 +38,11 @@ public abstract class ChannelEntry {
     public static Builder builder() {
         return new AutoValue_ChannelEntry.Builder()
                 .setTitle("")
-                .setDescription("");
+                .setDescription("")
+                .setItems(new ArrayList<>())
+                .setLink("")
+                .setLastBuildDate("")
+                .setImage(ChannelImage.builder().build());
     }
 
     @AutoValue.Builder

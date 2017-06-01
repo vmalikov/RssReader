@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 
 import com.justforfun.rssreader.R;
 import com.squareup.picasso.Picasso;
@@ -23,6 +24,8 @@ public class ImageLoader {
     public static void loadLogo(Context context, String url, OnDrawableReady onDrawableReady) {
         if(onDrawableReady == null)
             throw new IllegalArgumentException("OnDrawableReady callback can not be null!");
+
+        if(TextUtils.isEmpty(url)) return;
 
         Picasso.with(context)
                 .load(url)

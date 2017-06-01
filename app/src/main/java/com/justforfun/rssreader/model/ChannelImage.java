@@ -9,18 +9,15 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class ChannelImage {
     public abstract String url();
-    public abstract int width();
-    public abstract int height();
 
     public static Builder builder() {
-        return new AutoValue_ChannelImage.Builder();
+        return new AutoValue_ChannelImage.Builder()
+                .setUrl("");
     }
 
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Builder setUrl(String value);
-        public abstract Builder setWidth(int value);
-        public abstract Builder setHeight(int value);
         public abstract ChannelImage build();
     }
 }

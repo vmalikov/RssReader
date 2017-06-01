@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 
 import com.justforfun.rssreader.R;
 import com.justforfun.rssreader.databinding.SourceSelectorLayoutBinding;
@@ -18,6 +19,8 @@ import com.justforfun.rssreader.feature.shared.IRouter;
 import com.justforfun.rssreader.feature.shared.IScreen;
 import com.justforfun.rssreader.feature.shared.IToolbarableView;
 import com.justforfun.rssreader.feature.shared.viewmodel.SharedViewModel;
+import com.justforfun.rssreader.network.repository.LiveJournalRepository;
+import com.justforfun.rssreader.network.repository.MediumRepository;
 import com.justforfun.rssreader.util.Keyboard;
 
 import java.security.Key;
@@ -49,17 +52,30 @@ public class SourceSelectorFragment extends BaseFragment {
 
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         setupGoListener(router);
+        setupSourceGroupListeners();
 
-        // FIXME: 5/25/17 remove stub zmey-gadukin
-        binding.editText.setText("evo-lutio");
-        binding.editText.setSelection(binding.editText.getText().length());
+        // FIXME: 5/25/17 remove stub zmey-gadukin :: evo-lutio :: Medium
+        binding.username.setText("Medium");
+        binding.username.setSelection(binding.username.getText().length());
     }
 
     private void setupGoListener(IRouter router) {
         binding.go.setOnClickListener(v -> {
-            Keyboard.hideKeyboard(binding.editText);
-            model.setUsername(binding.editText.getText().toString());
+            Keyboard.hideKeyboard(binding.username);
+            model.setUsername(binding.username.getText().toString());
             router.showScreen(new FeedFragment());
+        });
+    }
+
+    private void setupSourceGroupListeners() {
+        model.setRepositoryClass(LiveJournalRepository.class);
+
+        binding.ljButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked) model.setRepositoryClass(LiveJournalRepository.class);
+        });
+
+        binding.mediumButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked) model.setRepositoryClass(MediumRepository.class);
         });
     }
 }
