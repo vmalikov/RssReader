@@ -6,6 +6,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.justforfun.rssreader.R;
 import com.justforfun.rssreader.databinding.ActivityMainBinding;
@@ -26,6 +29,8 @@ public class MainActivity extends BaseActivity implements IToolbarableView, IRou
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
+
+        binding.webview.getSettings().setJavaScriptEnabled(true);
 
         showScreen(new SourceSelectorFragment());
     }
@@ -57,6 +62,7 @@ public class MainActivity extends BaseActivity implements IToolbarableView, IRou
     public void onBackPressed() {
         if(binding.webview.isShown()) {
             binding.webview.setVisibility(View.GONE);
+            binding.webview.loadUrl("about:blank");
             return;
         }
         super.onBackPressed();

@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
@@ -44,15 +45,12 @@ public class RssClient {
             String urlString = String.format(rss_url, user);
             Log.i(TAG, "fetchFeedFor: " + urlString);
             URL url = new URL(urlString);
-            try {
-                InputStream inputStream = url.openConnection().getInputStream();
-                return parseRss(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-                // FIXME: 5/25/17 return empty instead of null. Null leads to crash
-                return null;
-            }
-        }).subscribeOn(Schedulers.io());
+
+            InputStream inputStream = url.openConnection().getInputStream();
+            return parseRss(inputStream);
+
+        }).doOnError(t -> Single.error(t))
+          .subscribeOn(Schedulers.io());
     }
 
     private ChannelEntry parseRss(InputStream in) throws IOException {
