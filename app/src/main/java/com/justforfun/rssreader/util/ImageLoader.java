@@ -21,7 +21,8 @@ public class ImageLoader {
     }
 
     public static void loadLogo(Context context, String url, OnDrawableReady onDrawableReady) {
-        if(onDrawableReady == null) throw new IllegalArgumentException("OnDrawableReady callback can not be null!");
+        if(onDrawableReady == null)
+            throw new IllegalArgumentException("OnDrawableReady callback can not be null!");
 
         Picasso.with(context)
                 .load(url)
@@ -33,7 +34,7 @@ public class ImageLoader {
         return new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                Bitmap b = Bitmap.createScaledBitmap(bitmap, 120, 120, false);
+                Bitmap b = Bitmap.createScaledBitmap(bitmap,120,120,false);
                 BitmapDrawable icon = new BitmapDrawable(resources, b);
                 onDrawableReady.onReady(icon);
             }

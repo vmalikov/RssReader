@@ -18,20 +18,28 @@ import com.justforfun.rssreader.feature.shared.IRouter;
 import com.justforfun.rssreader.feature.shared.IScreen;
 import com.justforfun.rssreader.feature.shared.IToolbarableView;
 import com.justforfun.rssreader.feature.shared.viewmodel.SharedViewModel;
+import com.justforfun.rssreader.util.Keyboard;
+
+import java.security.Key;
 
 /**
  * Created by Vladimir on 5/16/17.
  */
 
-public class SourceSelectorFragment extends BaseFragment implements IScreen {
+public class SourceSelectorFragment extends BaseFragment {
 
     private SharedViewModel model;
     private SourceSelectorLayoutBinding binding;
+    private IToolbarableView view;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.source_selector_layout, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.source_selector_layout,
+                                           container, false);
+
         return binding.getRoot();
     }
 
@@ -49,20 +57,9 @@ public class SourceSelectorFragment extends BaseFragment implements IScreen {
 
     private void setupGoListener(IRouter router) {
         binding.go.setOnClickListener(v -> {
-            hideKeyboard(binding.editText);
+            Keyboard.hideKeyboard(binding.editText);
             model.setUsername(binding.editText.getText().toString());
             router.showScreen(new FeedFragment());
         });
-    }
-
-    @Override
-    public void setToolbarableView(IToolbarableView view) {
-        // stub
-    }
-
-    // TODO: 5/25/17 move to Util class
-    private void hideKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 }

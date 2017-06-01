@@ -9,9 +9,10 @@ import android.widget.Toast;
  * Created by Vladimir on 5/16/17.
  */
 
-public class BaseFragment extends LifecycleFragment {
+public class BaseFragment extends LifecycleFragment implements IScreen {
 
     protected IRouter router;
+    protected IToolbarableView toolbarableView;
 
     protected void showToastMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
@@ -29,5 +30,13 @@ public class BaseFragment extends LifecycleFragment {
     public void onDestroy() {
         super.onDestroy();
         router = null;
+    }
+
+    @Override
+    public void setToolbarableView(IToolbarableView toolbarableView) {
+        if(toolbarableView == null)
+            throw new IllegalArgumentException("Please provide view with toolbar!");
+
+        this.toolbarableView = toolbarableView;
     }
 }

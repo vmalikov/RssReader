@@ -11,8 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 public class BaseActivity extends AppCompatActivity {
 
     protected void addFragment(int containerViewId, Fragment fragment) {
-        final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(containerViewId, fragment);
-        fragmentTransaction.commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(containerViewId, fragment)
+                .addToBackStack(fragment.getClass().getName())
+                .commit();
     }
 }

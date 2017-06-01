@@ -37,7 +37,8 @@ public class FeedsListAdapter extends RecyclerView.Adapter<FeedsListAdapter.Feed
     @Override
     public FeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        FeedItemLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.feed_item_layout, parent, false);
+        FeedItemLayoutBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.feed_item_layout, parent, false);
         return new FeedViewHolder(binding);
     }
 
@@ -45,7 +46,6 @@ public class FeedsListAdapter extends RecyclerView.Adapter<FeedsListAdapter.Feed
     public void onBindViewHolder(FeedViewHolder holder, int position) {
         FeedItem item = getItem(position);
         holder.title.setText(item.title);
-        Log.i(TAG, "onBindViewHolder: " + item.description);
         holder.description.setText(Html.fromHtml(item.description));
         holder.pubDate.setText(StringFormatter.formatPubDate(item.pubDate));
     }

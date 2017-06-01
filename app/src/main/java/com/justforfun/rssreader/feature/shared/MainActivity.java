@@ -25,7 +25,7 @@ public class MainActivity extends BaseActivity implements IToolbarableView, IRou
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
-        
+
         showScreen(new SourceSelectorFragment());
     }
 

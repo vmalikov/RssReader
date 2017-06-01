@@ -36,7 +36,9 @@ public abstract class ChannelEntry {
     public abstract ArrayList<FeedEntry> items();
 
     public static Builder builder() {
-        return new AutoValue_ChannelEntry.Builder();
+        return new AutoValue_ChannelEntry.Builder()
+                .setTitle("")
+                .setDescription("");
     }
 
     @AutoValue.Builder

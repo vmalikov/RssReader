@@ -28,7 +28,11 @@ public abstract class FeedEntry {
     public abstract String pubDate();
 
     public static FeedEntry.Builder builder() {
-        return new AutoValue_FeedEntry.Builder();
+        return new AutoValue_FeedEntry.Builder()
+                .setTitle("")
+                .setDescription("")
+                .setLink("")
+                .setPubDate("");
     }
 
     @AutoValue.Builder
