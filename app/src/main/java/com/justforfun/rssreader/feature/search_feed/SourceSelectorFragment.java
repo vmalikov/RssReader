@@ -61,7 +61,7 @@ public class SourceSelectorFragment extends BaseFragment {
 
     private void setupSourceGroupListeners() {
         // initial value
-        model.setRepositoryClass(LiveJournalRepository.class);
+        model.setRepositoryClass(MediumRepository.class);
 
         binding.ljButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked) model.setRepositoryClass(LiveJournalRepository.class);

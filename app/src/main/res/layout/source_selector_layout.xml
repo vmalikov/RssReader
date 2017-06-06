@@ -45,12 +45,12 @@
                     android:text="Live Journal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/lj_button"
-                    android:layout_weight="1" android:checked="true"/>
+                    android:layout_weight="1"/>
             <RadioButton
                     android:text="Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/medium_button"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" android:checked="true"/>
         </RadioGroup>
 
     </android.support.constraint.ConstraintLayout>

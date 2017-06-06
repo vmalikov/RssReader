@@ -3,58 +3,33 @@ package com.justforfun.rssreader.feature.feed;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.Nullable;
 
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
+import com.justforfun.rssreader.feature.shared.ILoadingView;
 import com.justforfun.rssreader.network.repository.AbstractRepository;
 
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Vladimir on 6/1/17.
  */
 
-public class FeedViewModel<T extends IChannelableView> extends ViewModel {
-
-    @Nullable
-    private T view;
+public class FeedViewModel extends ViewModel {
 
     private AbstractRepository repository;
 
     private MutableLiveData<ChannelData> channelData = new MutableLiveData<>();
 
-    public void setRepository(AbstractRepository repository) {
-        this.repository = repository;
-    }
-
-    public void setView(T view) {
-        this.view = view;
-    }
-
-    public void loadChannelFor(String user) {
-        view.showLoading();
-        repository.fetchFeed(user)
+    public Single<ChannelData> loadChannelFor(String user) {
+        return repository.fetchFeed(user)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(e -> showError(e))
-                .subscribe(channel -> onChannelReceived(channel));
-    }
+                .subscribeOn(Schedulers.io())
 
-    private void onChannelReceived(ChannelData channel) {
-        view.hideLoading();
-
-        if(channel.equals(ChannelData.empty)) {
-            view.showEmptyState();
-            return;
-        }
-
-        view.hideEmptyState();
-        view.updateToolbar(channel);
-        setChannelData(channel);
-    }
-
-    private void showError(Throwable e) {
-        view.hideLoading();
-        view.showError(e.getMessage());
+                .doOnError(e -> e.printStackTrace())
+                .doOnSuccess(channel -> setChannelData(channel));
     }
 
     public LiveData<ChannelData> getChannelData() {
@@ -63,5 +38,15 @@ public class FeedViewModel<T extends IChannelableView> extends ViewModel {
 
     public void setChannelData(ChannelData value) {
         this.channelData.setValue(value);
+    }
+
+    public void setRepository(Class repositoryClass) {
+        try {
+            this.repository = (AbstractRepository) repositoryClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
