@@ -81,7 +81,7 @@ public class FeedFragment extends BaseFragment implements ILoadingView {
         FeedsListAdapter adapter = new FeedsListAdapter();
 
         feedViewModel.getChannelData().observe(this,
-                channel -> adapter.setItems(((ChannelData)channel).items));
+                channel -> adapter.setItems(channel.items));
 
         adapter.getPositionClicks()
                 .doOnNext(item -> router.showLink(item.link))

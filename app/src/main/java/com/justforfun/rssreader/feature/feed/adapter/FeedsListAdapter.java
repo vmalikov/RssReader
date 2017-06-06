@@ -1,6 +1,7 @@
 package com.justforfun.rssreader.feature.feed.adapter;
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -32,9 +33,11 @@ public class FeedsListAdapter extends RecyclerView.Adapter<FeedsListAdapter.Feed
         items = new ArrayList<>();
     }
 
-    public void setItems(ArrayList<FeedItem> items) {
+    public void setItems(@Nullable ArrayList<FeedItem> items) {
         this.items.clear();
-        this.items.addAll(items);
+        if(items != null) {
+            this.items.addAll(items);
+        }
         notifyDataSetChanged();
     }
 
