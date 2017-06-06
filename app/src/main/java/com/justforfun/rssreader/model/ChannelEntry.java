@@ -54,6 +54,24 @@ public abstract class ChannelEntry {
         public abstract Builder setImage(ChannelImage value);
         public abstract Builder setItems(ArrayList<FeedEntry> items);
         public abstract ChannelEntry build();
+        
+        public void setValueForFiled(String name, String value) {
+            for (Field field : getClass().getDeclaredFields()) {
+                field.setAccessible(true); // You might want to set modifier to public first.
+                if(field.getName().equals(name)) {
+                    field.set(this, value);   
+                }
+            }   
+        }
+    
+        public void setValueForFiled(String name, Image value) {
+            for (Field field : getClass().getDeclaredFields()) {
+                field.setAccessible(true); // You might want to set modifier to public first.
+                if(field.getName().equals(name)) {
+                    field.set(this, value);   
+                }
+            }   
+        }
     }
 }
 
