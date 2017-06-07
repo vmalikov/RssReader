@@ -29,18 +29,18 @@ public class FeedItemDeserializer extends XmlDeserializer {
             }
             String name = parser.getName();
 
-            if (name.equals(Constants.TITLE)) {
-                builder.setTitle(readByTagName(Constants.TITLE, parser));
-            } else if (name.equals(Constants.DESCRIPTION)) {
-                builder.setDescription(readByTagName(Constants.DESCRIPTION, parser));
-            } else if (name.equals(Constants.CONTENT_ENCODED)) {
-                builder.setDescription(readByTagName(Constants.CONTENT_ENCODED, parser));
-            } else if (name.equals(Constants.LINK)) {
-                builder.setLink(readByTagName(Constants.LINK, parser));
-            } else if (name.equals(Constants.PUB_DATE)) {
-                builder.setPubDate(readByTagName(Constants.PUB_DATE, parser));
-            } else {
-                skip(parser);
+            switch(name) {
+                case Constants.TITLE:
+                case Constants.DESCRIPTION:
+                case Constants.CONTENT_ENCODED:
+                case Constants.LINK:
+                case Constants.LAST_BUILD_DATE:
+                case Constants.PUB_DATE:
+                    String value = readByTagName(name, parser);
+                    builder.setValueForFiled(name, value);
+                    break;
+                default:
+                    skip(parser);
             }
         }
         return builder.build();

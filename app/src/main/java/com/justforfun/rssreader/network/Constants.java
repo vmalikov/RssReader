@@ -5,19 +5,19 @@ package com.justforfun.rssreader.network;
  */
 
 public class Constants {
-    public static String CHANNEL = "channel";
-    public static String TITLE = "title";
-    public static String DESCRIPTION = "description";
-    public static String LINK = "link";
-    public static String PUB_DATE = "pubDate";
-    public static String GUID = "guid";
-    public static String LAST_BUILD_DATE = "lastBuildDate";
-    public static String IMAGE = "image";
-    public static String URL = "url";
-    public static String ITEM = "item";
+    public static final String CHANNEL = "channel";
+    public static final String TITLE = "title";
+    public static final String DESCRIPTION = "description";
+    public static final String LINK = "link";
+    public static final String PUB_DATE = "pubDate";
+    public static final String GUID = "guid";
+    public static final String LAST_BUILD_DATE = "lastBuildDate";
+    public static final String IMAGE = "image";
+    public static final String URL = "url";
+    public static final String ITEM = "item";
 
     /**
      * Medium specific
      */
-    public static String CONTENT_ENCODED = "content:encoded";
+    public static final String CONTENT_ENCODED = "content:encoded";
 }

@@ -48,20 +48,22 @@ public class ChannelDeserializer extends XmlDeserializer {
             }
             String name = parser.getName();
 
-            if (name.equals(Constants.TITLE)) {
-                builder.setTitle(readByTagName(Constants.TITLE, parser));
-            } else if (name.equals(Constants.DESCRIPTION)) {
-                builder.setDescription(readByTagName(Constants.DESCRIPTION, parser));
-            } else if (name.equals(Constants.LINK)) {
-                builder.setLink(readByTagName(Constants.LINK, parser));
-            } else if (name.equals(Constants.LAST_BUILD_DATE)) {
-                builder.setLastBuildDate(readByTagName(Constants.LAST_BUILD_DATE, parser));
-            } else if (name.equals(Constants.ITEM)) {
-                items.add(readItem(parser));
-            } else if (name.equals(Constants.IMAGE)) {
-                builder.setImage(readImage(parser));
-            } else {
-                skip(parser);
+            switch(name) {
+                case Constants.TITLE:
+                case Constants.DESCRIPTION:
+                case Constants.LINK:
+                case Constants.LAST_BUILD_DATE:
+                    String value = readByTagName(name, parser);
+                    builder.setValueForFiled(name, value);
+                    break;
+                case Constants.IMAGE:
+                    builder.setValueForFiled(name, readImage(parser));
+                    break;
+                case Constants.ITEM:
+                    items.add(readItem(parser));
+                    break;
+                default:
+                    skip(parser);
             }
         }
         return builder
