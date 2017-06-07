@@ -5,10 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
-import com.justforfun.rssreader.feature.shared.ILoadingView;
 import com.justforfun.rssreader.network.repository.AbstractRepository;
 
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

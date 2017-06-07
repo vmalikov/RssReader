@@ -15,7 +15,6 @@ import com.justforfun.rssreader.databinding.FeedLayoutBinding;
 import com.justforfun.rssreader.feature.feed.adapter.FeedsListAdapter;
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.feature.shared.BaseFragment;
-import com.justforfun.rssreader.feature.shared.ILoadingView;
 import com.justforfun.rssreader.feature.shared.viewmodel.SharedViewModel;
 import com.justforfun.rssreader.util.ImageLoader;
 
@@ -23,7 +22,7 @@ import com.justforfun.rssreader.util.ImageLoader;
  * Created by Vladimir on 5/16/17.
  */
 
-public class FeedFragment extends BaseFragment implements ILoadingView {
+public class FeedFragment extends BaseFragment {
 
     private FeedLayoutBinding binding;
     private FeedViewModel feedViewModel;
@@ -56,17 +55,19 @@ public class FeedFragment extends BaseFragment implements ILoadingView {
 
     private void showFeed(@NonNull String username) {
         feedViewModel.loadChannelFor(username)
-                .doOnSubscribe(s -> showLoading())
-                .doOnSuccess(s -> hideLoading())
-                .doOnError(e -> showError(e.toString()))
+                .doOnSubscribe(s -> binding.setIsLoading(true))
+                .doOnSuccess(s -> binding.setIsLoading(false))
+                .doOnError(e -> binding.setIsLoading(false))
+                .doOnError(e -> showToastMessage(e.toString()))
                 .subscribe();
     }
 
     private void onDataUpdated(@NonNull ChannelData channel) {
-        if(channel.equals(ChannelData.empty)) {
-            showEmptyState();
-        } else {
-            hideEmptyState();
+
+        boolean isEmpty = channel.equals(ChannelData.empty);
+        binding.setIsEmpty(isEmpty);
+
+        if(!isEmpty) {
             updateToolbar(channel);
         }
     }
@@ -94,28 +95,5 @@ public class FeedFragment extends BaseFragment implements ILoadingView {
         toolbarableView.setTitle(channel.title);
         ImageLoader.loadLogo(getActivity().getApplicationContext(),
                 channel.image.url, drawable -> toolbarableView.setLogoFrom(drawable));
-    }
-
-    public void showEmptyState() {
-        binding.emptyText.setVisibility(View.VISIBLE);
-    }
-
-    public void hideEmptyState() {
-        binding.emptyText.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showLoading() {
-        binding.progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideLoading() {
-        binding.progressBar.setVisibility(View.GONE);
-    }
-
-    public void showError(String message) {
-        hideLoading();
-        showToastMessage(message);
     }
 }

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="isLoading" type="boolean" />
+        <variable name="isEmpty" type="boolean" />
+
+        <import type="android.view.View"/>
+    </data>
 
     <RelativeLayout
             android:layout_width="match_parent"
@@ -19,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/progressBar"
                 android:layout_centerInParent="true"
-                android:visibility="gone"
+                android:visibility="@{isLoading ? View.VISIBLE : View.GONE}"
         />
 
         <TextView
@@ -30,7 +38,7 @@
                 android:textSize="16sp"
                 android:textColor="@android:color/white"
                 android:text="There is no feed for these usename and source.."
-                android:visibility="gone"/>
+                android:visibility="@{isEmpty ? View.VISIBLE : View.GONE}"/>
 
     </RelativeLayout>
 
