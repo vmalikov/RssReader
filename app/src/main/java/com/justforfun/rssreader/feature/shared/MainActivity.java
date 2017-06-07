@@ -30,9 +30,10 @@ public class MainActivity extends BaseActivity implements IToolbarableView, IRou
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
 
-        binding.webview.getSettings().setJavaScriptEnabled(true);
-
-        showScreen(new SourceSelectorFragment());
+        if(savedInstanceState == null) {
+            binding.webview.getSettings().setJavaScriptEnabled(true);
+            showScreen(new SourceSelectorFragment());
+        }
     }
 
     @Override
@@ -46,10 +47,9 @@ public class MainActivity extends BaseActivity implements IToolbarableView, IRou
     }
 
     @Override
-    public void showScreen(IScreen screen) {
+    public void showScreen(BaseFragment fragment) {
         binding.webview.setVisibility(View.GONE);
-        screen.setToolbarableView(this);
-        addFragment(R.id.fragment, (Fragment) screen);
+        addFragment(R.id.fragment, fragment);
     }
 
     @Override

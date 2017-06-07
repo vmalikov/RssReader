@@ -9,7 +9,7 @@ import android.widget.Toast;
  * Created by Vladimir on 5/16/17.
  */
 
-public class BaseFragment extends LifecycleFragment implements IScreen {
+public class BaseFragment extends LifecycleFragment {
 
     protected IRouter router;
     protected IToolbarableView toolbarableView;
@@ -24,19 +24,16 @@ public class BaseFragment extends LifecycleFragment implements IScreen {
         if(getActivity() instanceof IRouter) {
             router = (IRouter) getActivity();
         }
+
+        if(getActivity() instanceof IToolbarableView) {
+            toolbarableView = (IToolbarableView) getActivity();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         router = null;
-    }
-
-    @Override
-    public void setToolbarableView(IToolbarableView toolbarableView) {
-        if(toolbarableView == null)
-            throw new IllegalArgumentException("Please provide view with toolbar!");
-
-        this.toolbarableView = toolbarableView;
+        toolbarableView = null;
     }
 }
