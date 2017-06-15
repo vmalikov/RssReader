@@ -16,24 +16,11 @@ import com.justforfun.simplexml.annotation.XmlName;
  </item>
 */
 
-/*
-@XmlName("item") class FeedItem {
-    @XmlName("title") var title = ""
-    @XmlName("content:encoded") var description = ""
-    @XmlName("link") var link = ""
-    @XmlName("pubDate") var pubDate = ""
-
-    override fun toString(): String {
-        return "FeedItem(title='$title', description='$description', link='$link', pubDate='$pubDate')"
-    }
-}
- */
-
 @XmlName(name = "item")
 public class FeedEntryWithAnnotation {
     @XmlName(name = "title")
     public String title;
-    @XmlName(name = "content:encoded")
+    @XmlName(name = "content:encoded", names = {"description"})
     public String description;
     @XmlName(name = "link")
     public String link;
