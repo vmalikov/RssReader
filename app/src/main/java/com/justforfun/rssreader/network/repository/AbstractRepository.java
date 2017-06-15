@@ -2,7 +2,7 @@ package com.justforfun.rssreader.network.repository;
 
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.network.RssClient;
-import com.justforfun.rssreader.util.EntityConvertor;
+import com.justforfun.rssreader.util.convertor.EntityConvertor;
 
 import io.reactivex.Single;
 
@@ -16,6 +16,6 @@ public abstract class AbstractRepository {
 
     public Single<ChannelData> fetchFeed(String user) {
         return RssClient.getInstance().fetchFeedFor(user, getRssUrl())
-                .flatMap(channelEntry -> EntityConvertor.convertToViewData(channelEntry));
+                .flatMap(EntityConvertor::convertData);
     }
 }

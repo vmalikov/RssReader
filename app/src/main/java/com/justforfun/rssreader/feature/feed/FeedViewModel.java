@@ -21,29 +21,27 @@ public class FeedViewModel extends ViewModel {
 
     private MutableLiveData<ChannelData> channelData = new MutableLiveData<>();
 
-    public Single<ChannelData> loadChannelFor(String user) {
+    Single<ChannelData> loadChannelFor(String user) {
         return repository.fetchFeed(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
 
-                .doOnError(e -> e.printStackTrace())
-                .doOnSuccess(channel -> setChannelData(channel));
+                .doOnError(Throwable::printStackTrace)
+                .doOnSuccess(this::setChannelData);
     }
 
-    public LiveData<ChannelData> getChannelData() {
+    LiveData<ChannelData> getChannelData() {
         return channelData;
     }
 
-    public void setChannelData(ChannelData value) {
+    private void setChannelData(ChannelData value) {
         this.channelData.setValue(value);
     }
 
-    public void setRepository(Class repositoryClass) {
+    void setRepository(Class repositoryClass) {
         try {
             this.repository = (AbstractRepository) repositoryClass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }

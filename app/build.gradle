@@ -68,4 +68,5 @@ dependencies {
     compile "android.arch.lifecycle:extensions:${archLifecycleVersion}"
     compile "android.arch.lifecycle:runtime:${archLifecycleVersion}"
     annotationProcessor "android.arch.lifecycle:compiler:${archLifecycleVersion}"
+    compile project(path: ':../simplexmlparser')
 }

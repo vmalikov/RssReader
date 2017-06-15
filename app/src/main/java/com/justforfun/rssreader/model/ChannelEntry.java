@@ -2,10 +2,8 @@ package com.justforfun.rssreader.model;
 
 import com.google.auto.value.AutoValue;
 
-import com.justforfun.rssreader.feature.feed.model.ChannelData;
-import com.justforfun.rssreader.util.FiledFiller;
+import android.text.TextUtils;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
@@ -49,6 +47,15 @@ public abstract class ChannelEntry {
                 .setImage(ChannelImage.builder().build());
     }
 
+    public boolean shouldBeEmpty() {
+        return TextUtils.isEmpty(title())
+                && TextUtils.isEmpty(description())
+                && TextUtils.isEmpty(lastBuildDate())
+                && TextUtils.isEmpty(link())
+                && (items() == null || items().isEmpty())
+                ;
+    }
+
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Builder setTitle(String value);
@@ -58,14 +65,5 @@ public abstract class ChannelEntry {
         public abstract Builder setImage(ChannelImage value);
         public abstract Builder setItems(ArrayList<FeedEntry> items);
         public abstract ChannelEntry build();
-
-        public void setValueForFiled(String name, String value) {
-            FiledFiller.setValueForFiled(this, name, value);
-        }
-
-        public void setValueForFiled(String name, ChannelImage value) {
-            FiledFiller.setValueForFiled(this, name, value);
-        }
     }
 }
-

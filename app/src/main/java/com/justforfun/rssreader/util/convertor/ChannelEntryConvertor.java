@@ -1,7 +1,6 @@
-package com.justforfun.rssreader.util;
+package com.justforfun.rssreader.util.convertor;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
 import com.justforfun.rssreader.feature.feed.model.FeedItem;
@@ -13,13 +12,14 @@ import java.util.ArrayList;
 import io.reactivex.Single;
 
 /**
- * Created by Vladimir on 6/1/17.
+ * Created by Vladimir on 6/15/17.
  */
 
-public class EntityConvertor {
+public class ChannelEntryConvertor extends EntityConvertor<ChannelEntry> {
 
-    @NonNull public static Single<ChannelData> convertToViewData(ChannelEntry channelEntry) {
-        if(shouldBeEmpty(channelEntry)) return Single.just(ChannelData.empty);
+    @NonNull
+    public Single<ChannelData> convertToViewData(ChannelEntry channelEntry) {
+        if(channelEntry.shouldBeEmpty()) return Single.just(ChannelData.empty);
 
         ChannelData channelData = new ChannelData();
         channelData.title = channelEntry.title();
@@ -31,16 +31,7 @@ public class EntityConvertor {
         return Single.just(channelData);
     }
 
-    private static boolean shouldBeEmpty(ChannelEntry channelEntry) {
-        return TextUtils.isEmpty(channelEntry.title())
-                && TextUtils.isEmpty(channelEntry.description())
-                && TextUtils.isEmpty(channelEntry.lastBuildDate())
-                && TextUtils.isEmpty(channelEntry.link())
-                && (channelEntry.items() == null || channelEntry.items().isEmpty())
-                ;
-    }
-
-    @NonNull private static ArrayList<FeedItem> convertFeedEntryItems(ChannelEntry channelEntry) {
+    @NonNull private ArrayList<FeedItem> convertFeedEntryItems(ChannelEntry channelEntry) {
         ArrayList<FeedItem> feedItems = new ArrayList<>();
         for(FeedEntry entry : channelEntry.items()) {
             feedItems.add(convertFeedEntry(entry));
@@ -48,13 +39,13 @@ public class EntityConvertor {
         return feedItems;
     }
 
-    @NonNull private static ChannelData.Image convertFeedEntryImage(ChannelEntry channelEntry) {
+    @NonNull private ChannelData.Image convertFeedEntryImage(ChannelEntry channelEntry) {
         ChannelData.Image image = new ChannelData.Image();
         image.url = channelEntry.image().url();
         return image;
     }
 
-    @NonNull private static FeedItem convertFeedEntry(FeedEntry entry) {
+    @NonNull private FeedItem convertFeedEntry(FeedEntry entry) {
         FeedItem item = new FeedItem();
 
         item.title = entry.title();

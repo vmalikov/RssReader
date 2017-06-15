@@ -2,12 +2,6 @@ package com.justforfun.rssreader.model;
 
 import com.google.auto.value.AutoValue;
 
-import android.support.annotation.Nullable;
-
-import com.justforfun.rssreader.util.FiledFiller;
-
-import java.util.Optional;
-
 /**
  * Created by Vladimir on 5/16/17.
  */
@@ -44,9 +38,5 @@ public abstract class FeedEntry {
         public abstract Builder setLink(String value);
         public abstract Builder setPubDate(String value);
         public abstract FeedEntry build();
-
-        public void setValueForFiled(String name, String value) {
-            FiledFiller.setValueForFiled(this, name, value);
-        }
     }
 }
