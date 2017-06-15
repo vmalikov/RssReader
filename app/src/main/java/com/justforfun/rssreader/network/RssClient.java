@@ -3,7 +3,7 @@ package com.justforfun.rssreader.network;
 import android.util.Log;
 
 import com.justforfun.rssreader.model.ChannelEntryWithAnnotations;
-import com.justforfun.simplexml.core.SimpleParser;
+import com.justforfun.simplexml.SimpleXmlParser;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -37,7 +37,7 @@ public class RssClient {
             URL url = new URL(urlString);
 
             InputStream inputStream = url.openConnection().getInputStream();
-            return SimpleParser.Companion.parse(inputStream, ChannelEntryWithAnnotations.class);
+            return SimpleXmlParser.Companion.parse(inputStream, ChannelEntryWithAnnotations.class);
 
         }).onErrorReturnItem(new ChannelEntryWithAnnotations())
           .subscribeOn(Schedulers.io());
