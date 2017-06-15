@@ -1,1 +1,1 @@
-include ':app', ':../simplexmlparser'
+include ':app', ':simplexmlparser'
