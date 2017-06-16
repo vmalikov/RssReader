@@ -20,7 +20,7 @@ import com.justforfun.simplexml.annotation.XmlName;
 public class FeedEntryWithAnnotation {
     @XmlName(name = "title")
     public String title;
-    @XmlName(name = "content:encoded", names = {"description"})
+    @XmlName(names = {"content:encoded", "description"})
     public String description;
     @XmlName(name = "link")
     public String link;
