@@ -8,6 +8,6 @@ import com.justforfun.simplexml.annotation.XmlName;
 
 @XmlName(name = "image")
 public class ChannelImageWithAnnotations {
-    @XmlName(name = "image")
+    @XmlName(name = "url")
     public String url;
 }
