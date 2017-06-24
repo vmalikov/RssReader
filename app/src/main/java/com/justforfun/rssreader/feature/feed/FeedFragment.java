@@ -14,6 +14,7 @@ import com.justforfun.rssreader.R;
 import com.justforfun.rssreader.databinding.FeedLayoutBinding;
 import com.justforfun.rssreader.feature.feed.adapter.FeedsListAdapter;
 import com.justforfun.rssreader.feature.feed.model.ChannelData;
+import com.justforfun.rssreader.feature.search_feed.model.UsernameItem;
 import com.justforfun.rssreader.feature.shared.BaseFragment;
 import com.justforfun.rssreader.feature.shared.viewmodel.SharedViewModel;
 import com.justforfun.rssreader.util.ImageLoader;
@@ -27,39 +28,36 @@ public class FeedFragment extends BaseFragment {
     private FeedLayoutBinding binding;
     private FeedViewModel feedViewModel;
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.feed_layout,
-                                        container, false);
+        @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.feed_layout, container, false);
         return binding.getRoot();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         feedViewModel = ViewModelProviders.of(this).get(FeedViewModel.class);
 
-        feedViewModel.getChannelData()
-                     .observe(this, channel -> onDataUpdated(channel));
+        feedViewModel.getChannelData().observe(this, channel -> onDataUpdated(channel));
 
-        SharedViewModel sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        SharedViewModel sharedViewModel =
+            ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
-        sharedViewModel.getRepositoryClass().observe(this, feedViewModel::setRepository);
+        sharedViewModel.getRepository().observe(this, feedViewModel::setRepository);
         sharedViewModel.getUsername().observe(this, this::showFeed);
 
         setupFeedsList();
     }
 
-    private void showFeed(@NonNull String username) {
-        feedViewModel.loadChannelFor(username)
-                .doOnSubscribe(s -> binding.setIsLoading(true))
-                .doOnSuccess(s -> binding.setIsLoading(false))
-                .doOnError(e -> binding.setIsLoading(false))
-                .doOnError(e -> showToastMessage(e.toString()))
-                .subscribe();
+    private void showFeed(@NonNull UsernameItem item) {
+        feedViewModel.loadChannelFor(item.getUsername())
+            .doOnSubscribe(s -> binding.setIsLoading(true))
+            .doOnSuccess(s -> binding.setIsLoading(false))
+            .doOnError(e -> binding.setIsLoading(false))
+            .doOnError(e -> showToastMessage(e.toString()))
+            .subscribe();
     }
 
     private void onDataUpdated(@NonNull ChannelData channel) {
@@ -67,7 +65,7 @@ public class FeedFragment extends BaseFragment {
         boolean isEmpty = channel.equals(ChannelData.empty);
         binding.setIsEmpty(isEmpty);
 
-        if(!isEmpty) {
+        if (!isEmpty) {
             updateToolbar(channel);
         }
     }
@@ -81,19 +79,16 @@ public class FeedFragment extends BaseFragment {
     private FeedsListAdapter provideAdapter() {
         FeedsListAdapter adapter = new FeedsListAdapter();
 
-        feedViewModel.getChannelData().observe(this,
-                channel -> adapter.setItems(channel.items));
+        feedViewModel.getChannelData().observe(this, channel -> adapter.setItems(channel.items));
 
-        adapter.getPositionClicks()
-                .doOnNext(item -> router.showLink(item.link))
-                .subscribe();
+        adapter.getPositionClicks().doOnNext(item -> router.showLink(item.link)).subscribe();
 
         return adapter;
     }
 
     public void updateToolbar(ChannelData channel) {
         toolbarableView.setTitle(channel.title);
-        ImageLoader.loadLogo(getActivity().getApplicationContext(),
-                channel.image.url, drawable -> toolbarableView.setLogoFrom(drawable));
+        ImageLoader.loadLogo(getActivity().getApplicationContext(), channel.image.url,
+            drawable -> toolbarableView.setLogoFrom(drawable));
     }
 }
