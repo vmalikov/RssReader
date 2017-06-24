@@ -1,20 +1,13 @@
 package com.justforfun.rssreader.feature.shared;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 
 import com.justforfun.rssreader.R;
 import com.justforfun.rssreader.databinding.ActivityMainBinding;
-import com.justforfun.rssreader.feature.feed.FeedFragment;
-import com.justforfun.rssreader.feature.search_feed.SourceSelectorFragment;
-import com.justforfun.rssreader.feature.shared.viewmodel.SharedViewModel;
+import com.justforfun.rssreader.feature.search_feed.SelectSourceFragment;
 
 /**
  * Created by Vladimir on 5/16/17.
@@ -32,7 +25,7 @@ public class MainActivity extends BaseActivity implements IToolbarableView, IRou
 
         if(savedInstanceState == null) {
             binding.webview.getSettings().setJavaScriptEnabled(true);
-            showScreen(new SourceSelectorFragment());
+            showScreen(new SelectSourceFragment());
         }
     }
 
