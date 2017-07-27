@@ -1,5 +1,6 @@
 package com.justforfun.rssreader.feature.feed.adapter;
 
+import android.animation.ValueAnimator;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -7,16 +8,13 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.justforfun.rssreader.R;
 import com.justforfun.rssreader.databinding.FeedItemLayoutBinding;
 import com.justforfun.rssreader.feature.feed.model.FeedItem;
 import com.justforfun.rssreader.util.StringFormatter;
-
-import java.util.ArrayList;
-
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import java.util.ArrayList;
 
 /**
  * Created by Vladimir on 5/17/17.
@@ -60,6 +58,8 @@ public class FeedsListAdapter extends RecyclerView.Adapter<FeedsListAdapter.Feed
         holder.description.setText(Html.fromHtml(item.description));
         holder.pubDate.setText(StringFormatter.formatPubDate(item.pubDate));
         holder.itemView.setOnClickListener(v -> onClickSubject.onNext(item));
+
+        holder.animateOnAppearance();
     }
 
     @Override
@@ -82,6 +82,14 @@ public class FeedsListAdapter extends RecyclerView.Adapter<FeedsListAdapter.Feed
             title = binding.title;
             description = binding.description;
             pubDate = binding.pubDate;
+        }
+
+        private void animateOnAppearance() {
+            ValueAnimator animator = ValueAnimator.ofFloat(0.5f, 1f)
+                .setDuration(500);
+
+            animator.addUpdateListener(animation -> itemView.setAlpha((float) animation.getAnimatedValue()));
+            animator.start();
         }
     }
 }
